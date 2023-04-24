@@ -6,7 +6,7 @@ def read_file():
             try:
                 key, value = i.strip().split("=")
             except ValueError as e:
-                # print(f"Некорректная строка: '{i.strip()}' удалена из массива.")
+                print(f"Некорректная строка: '{i.strip()}' удалена из массива.")
             result[key] = value
     return result
 
