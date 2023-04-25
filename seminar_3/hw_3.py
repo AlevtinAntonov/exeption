@@ -20,40 +20,15 @@
 # Не забудьте закрыть соединение с файлом.
 # При возникновении проблемы с чтением-записью в файл, исключение должно быть корректно обработано,
 # пользователь должен увидеть стектрейс ошибки.
-# 19.03.1964 89217730009 Antonov Alevtin Ivanovich m
-class CustomError(Exception):
-    pass
+# 19,03.1964 89217730009 Antonov Alevtin Ivanovich m
 
+from custom_error_classes import *
+from split_input_string import split_input_string
+from looking_for_date import looking_for_date
+from looking_for_male import looking_for_male
 
-class NumberOfInputDataWrongError(CustomError):
-    """Количество введенных данных не совпадает с требуемым"""
-
-class MaleNotEnteredError(CustomError):
-    """Не введен пол в формате: f or m"""
-
-class DateInputError(CustomError):
-    """Не введена дата рождения в формате dd.mm.yyyy"""
-
-
-def split_input_string(input_string):
-
-    person_name = ''
-    birth_date = ''
-    phone_number = ''
-    male = ''
-    for data in input_string:
-        if data == 'm' or data == 'f':
-            male = data
-        elif data[2] == '.' and data[5] == '.':
-
-            # if data[0].isdigit() and
-            birth_date = data
-        elif data.isdigit():
-            phone_number = data
-        else:
-            person_name = person_name + ' ' + data
-    print(f'FIO - {person_name}, date of birth - {birth_date}, phone - {phone_number}, male - {male} ')
-    return person_name, male, birth_date, phone_number
+male_entered = ''
+check_for_date = ''
 
 while True:
 
@@ -64,9 +39,13 @@ while True:
                          'пол - символ латиницей f или m : \n').split()
 
     # print(input_string)
+
     try:
-        male_entered = False
-        date_of_birth_check = False
+        looking_for_male(input_string)
+        print(male_entered)
+        looking_for_date(input_string)
+        print(check_for_date)
+
         if len(input_string) < 6:
             raise NumberOfInputDataWrongError(f'ОШИБКА! Количество данных = {len(input_string)} -> меньше требуемых 6\n'
                                               'Попробуйте ввести ещё раз\n')
@@ -74,26 +53,10 @@ while True:
             raise NumberOfInputDataWrongError(f'ОШИБКА! Количество данных = {len(input_string)} -> больше требуемых 6\n'
                                               'Попробуйте ввести ещё раз\n')
         elif not male_entered:
-            for data in input_string:
-                if data == 'm' or data == 'f':
-                    male_entered = True
-            if male_entered:
-                pass
-            else:
-                raise MaleNotEnteredError('ОШИБКА ! Не введен пол.')
+            raise MaleNotEnteredError('ОШИБКА ! Не введен пол.\n')
+        elif not check_for_date:
+            raise DateInputError('Не введена дата рождения в формате dd.mm.yyyy\n')
 
-        elif not date_of_birth_check:
-            for data in input_string:
-                print(data)
-                if len(data) == 10 and data[2] == '.' and data[5] == '.':
-                    date_of_birth_check = True
-                    print(data, len(data), data[2], data[5], 'date ok')
-            if date_of_birth_check:
-
-                pass
-            else:
-                print('hgghghghhg')
-                raise DateInputError('Ошибка! не введена дата рождения в формате dd.mm.yyyy')
 
     except NumberOfInputDataWrongError as e:
         print(e)
@@ -105,17 +68,17 @@ while True:
         split_input_string(input_string)
         break
 
-
-
-
-
-        # for data in input_string:
-        #     if len(data) == 10 and data[2] == '.' and data[5] == '.':
-        #         print(data, len(data), data[2], data[5], 'date ok')
-        #     else:
-        #         raise DateInputError('Ошибка! не введена дата рождения в формате dd.mm.yyyy')
-
-
-
-
-
+        if male_entered:
+            print('date_of_birth_check = ', date_of_birth_check)
+        elif date_of_birth_check is False:
+            print('date_of_birth_check = ', date_of_birth_check)
+            for data in input_string:
+                print(data)
+                if len(data) == 10 and data[2] == '.' and data[5] == '.':
+                    date_of_birth_check = True
+                    print(data, len(data), data[2], data[5], 'date ok')
+            if date_of_birth_check:
+                pass
+            else:
+                print('hgghghghhg')
+                raise DateInputError('Ошибка! не введена дата рождения в формате dd.mm.yyyy\n')
