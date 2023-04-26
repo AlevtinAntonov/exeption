@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from save_to_file import save_to_file
 
 def split_input_string(input_string):
     person_name = ''
@@ -15,6 +15,9 @@ def split_input_string(input_string):
         elif data.isdigit():
             phone_number = data
         else:
-            person_name = person_name + ' ' + data
+            person_name += data + ' '
     print(f'FIO - {person_name}, date of birth - {birth_date}, phone - {phone_number}, male - {male} ')
-    return person_name, male, birth_date, phone_number
+    file_name = person_name.split()[0] + '.txt'
+    new_string = person_name + ';' + birth_date + ';' + phone_number +';' + male
+    save_to_file(file_name, new_string)
+

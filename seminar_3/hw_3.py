@@ -20,15 +20,14 @@
 # Не забудьте закрыть соединение с файлом.
 # При возникновении проблемы с чтением-записью в файл, исключение должно быть корректно обработано,
 # пользователь должен увидеть стектрейс ошибки.
-# 19,03.1964 89217730009 Antonov Alevtin Ivanovich m
-
+# 89217730009 Antonov Alevtin Ivanovich 19.03.1964 m
 from custom_error_classes import *
 from split_input_string import split_input_string
-from looking_for_date import looking_for_date
 from looking_for_male import looking_for_male
+from looking_for_date import looking_for_date
+from looking_for_phone import looking_for_phone
 
-male_entered = ''
-check_for_date = ''
+
 
 while True:
 
@@ -41,22 +40,17 @@ while True:
     # print(input_string)
 
     try:
-        looking_for_male(input_string)
-        print(male_entered)
-        looking_for_date(input_string)
-        print(check_for_date)
-
         if len(input_string) < 6:
             raise NumberOfInputDataWrongError(f'ОШИБКА! Количество данных = {len(input_string)} -> меньше требуемых 6\n'
                                               'Попробуйте ввести ещё раз\n')
         elif len(input_string) > 6:
             raise NumberOfInputDataWrongError(f'ОШИБКА! Количество данных = {len(input_string)} -> больше требуемых 6\n'
                                               'Попробуйте ввести ещё раз\n')
-        elif not male_entered:
-            raise MaleNotEnteredError('ОШИБКА ! Не введен пол.\n')
-        elif not check_for_date:
-            raise DateInputError('Не введена дата рождения в формате dd.mm.yyyy\n')
 
+        looking_for_male(input_string)
+        looking_for_date(input_string)
+        looking_for_date(input_string)
+        looking_for_phone(input_string)
 
     except NumberOfInputDataWrongError as e:
         print(e)
@@ -64,21 +58,10 @@ while True:
         print(e)
     except DateInputError as e:
         print(e)
+    except PhoneNumberInputError as e:
+        print(e)
+
     else:
         split_input_string(input_string)
         break
 
-        if male_entered:
-            print('date_of_birth_check = ', date_of_birth_check)
-        elif date_of_birth_check is False:
-            print('date_of_birth_check = ', date_of_birth_check)
-            for data in input_string:
-                print(data)
-                if len(data) == 10 and data[2] == '.' and data[5] == '.':
-                    date_of_birth_check = True
-                    print(data, len(data), data[2], data[5], 'date ok')
-            if date_of_birth_check:
-                pass
-            else:
-                print('hgghghghhg')
-                raise DateInputError('Ошибка! не введена дата рождения в формате dd.mm.yyyy\n')
